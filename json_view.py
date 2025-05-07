@@ -2,6 +2,8 @@
 
 import json
 import sys
+import re 
+import datetime
 
 issue = json.load(sys.stdin)
 
@@ -12,6 +14,13 @@ def get_color_by_value(value):
         color = "31"
     if str(value).lower() in ["green", "on", "true", "enable"]: 
         color = "32"
+    if str(value).lower() in ["yellow", "ip"] or re.match(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$", str(value)): 
+        color = "33"
+    try:
+        a=datetime.datetime.fromisoformat(str(value))
+        color = "37;2"
+    except:
+        pass
     if str(value).lstrip("-").replace(".","",1).isnumeric(): 
         color = "36"
     return color
